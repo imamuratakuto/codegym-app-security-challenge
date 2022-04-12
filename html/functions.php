@@ -71,8 +71,9 @@ function getTweets()
 function getUserById($id)
 {
     $sql = 'select * from users where id = ';
-    $sql .= $id;    //user_idで検索する
+    $sql .= ':id';    //user_idで検索する
     $stmt = getPdo()->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     if ($stmt === false) {
         return false;
@@ -94,11 +95,14 @@ function updateUserById($id, $name, $profile) {
     $sql = "";
     $sql .= "update users ";
     $sql .= "set ";
-    $sql .= "id = " . $id . ", ";
-    $sql .= "name = '" . $name . "', ";
-    $sql .= "profile = '" . $profile . "' ";
-    $sql .= "where id = " . $id;
+    $sql .= "id = :id, ";
+    $sql .= "name = :name, ";
+    $sql .= "profile = :profile ";
+    $sql .= "where id = :id";
     $stmt = getPdo()->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+    $stmt->bindValue(':profile', $profile, PDO::PARAM_STR);
     return $stmt->execute();
 }
 
@@ -110,7 +114,7 @@ function getUsers()
 {
     $sql = "";
     $sql .= 'select * ';
-    $sql .= 'from users ';
+    $sql .= 'from users';
     $stmt = getPdo()->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -125,8 +129,9 @@ function getUsersById($user_id)
     $sql = "";
     $sql .= 'select * ';
     $sql .= 'from users ';
-    $sql .= 'where id = ' . $user_id;
+    $sql .= 'where id = :user_id';
     $stmt = getPdo()->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

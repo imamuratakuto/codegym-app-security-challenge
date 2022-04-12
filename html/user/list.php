@@ -2,7 +2,7 @@
 require_once('../db.php');
 require_once('../functions.php');
 
-if (isset($_GET['user_id']) && $_GET['user_id'] > 0){
+if (isset($_GET['user_id']) && $_GET['user_id'] > 0) {
     $user_id = intval($_GET['user_id']);
     $users = getUsersById($user_id);
 } else {

@@ -43,6 +43,10 @@ if ($_POST) { /* POST Requests */
 
 $tweets = getTweets();
 $tweet_count = count($tweets);
+
+function h($str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,9 +70,9 @@ $tweet_count = count($tweets);
     <?php foreach ($tweets as $t) { ?>
       <div class="card mb-3">
         <div class="card-body">
-          <?php $profile_url = "user/index.php?user_id=" . $t['user_id']; ?>
+          <?php $profile_url = "user/index.php?user_id=" . "{$t['user_id']}";?>
           <p class="card-title"><b><?= "{$t['id']}" ?></b> <a href=<?= "{$profile_url}" ?>><?= "{$t['name']}" ?></a> <small><?= "{$t['updated_at']}" ?></small></p>
-          <p class="card-text"><?= "{$t['text']}" ?></p>
+          <p class="card-text"><?= h("{$t['text']}"); ?></p>
         </div>
       </div>
     <?php } ?>
